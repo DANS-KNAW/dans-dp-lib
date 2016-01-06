@@ -1,0 +1,64 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Company Phone Directory database for DP 2.3
+README FOR:  PHONE.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  tracks local and remote office
+phone listings for DataPerfect 2.3.
+
+Self-Extracting File Name: phone.exe
+
+Files Included     Size     Date      Time
+
+..\
+       PHONE.TXT     (This file)
+       PHONE.D01            1536          9-1-93     11:40:00 am
+       PHONE.D02            1024          9-1-93     11:40:00 am
+       PHONE.IND           19968          9-1-93     11:40:00 am
+       PHONE.STR           57856          9-1-93     11:40:00 am
+       PHONE.TXX             512          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

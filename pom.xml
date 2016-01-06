@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>nl.knaw.dans.common</groupId>
+    <artifactId>dans-dp-lib</artifactId>
+    <!--version>1.0.0</version-->
+    <version>1.0.1-SNAPSHOT</version>
+    <name>DANS DataPerfect Library</name>
+    <url>http://dans-dp-lib.sourceforge.net/</url>
+    <inceptionYear>2009</inceptionYear>
+    <organization>
+        <name>DANS</name>
+        <url>http://www.dans.knaw.nl/en</url>
+    </organization>
+
+    <mailingLists>
+        <mailingList>
+            <archive>https://sourceforge.net/mailarchive/forum.php?forum_name=dans-dp-lib-users</archive>
+            <name>dans-dp-lib-users</name>
+            <post>dans-dp-lib-users@lists.sourceforge.net</post>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/dans-dp-lib-users</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/dans-dp-lib-users</unsubscribe>
+        </mailingList>
+    </mailingLists>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <developers>
+        <developer>
+            <name>Jan van Mansum</name>
+            <id>jan-van-mansum</id>
+            <organization>DANS</organization>
+            <organizationUrl>http://www.dans.knaw.nl</organizationUrl>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>Vesa Akerman</name>
+            <id>vesa-akerman</id>
+            <organization>DANS</organization>
+            <organizationUrl>http://www.dans.knaw.nl</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+	<developer>
+            <name>Martin Braaksma</name>
+            <id>martin-braaksma</id>
+            <organization>DANS</organization>
+            <organizationUrl>http://www.dans.knaw.nl</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <site>
+            <id>local</id>
+            <name>DANS DataPerfect Library Local Test Site</name>
+            <url>file://${user.home}/Temp/dans-dp-lib-site/</url>
+        </site>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>production</id>
+            <distributionManagement>
+                <site>
+                    <id>sourceforge-dans-dp-lib</id>
+                    <name>DANS DataPerfect Library SourceForge Site</name>
+                    <url>scp://shell.sourceforge.net:/home/groups/d/da/dans-dp-lib/htdocs</url>
+                </site>
+            </distributionManagement>
+        </profile>
+    </profiles>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.5</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jalopy-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                    <execution>
+                        <!-- Do formatting after compilation, otherwise compilation will always
+                             be deemed necessary, as formatting changes the source files
+                          -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <convention>src/config/jalopy.xml</convention>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/source-dist.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <licenses>
+        <license>
+            <name>GNU Public License</name>
+            <url>http://www.gnu.org/copyleft/gpl.html</url>
+        </license>
+    </licenses>
+</project>

@@ -1,0 +1,65 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Formulas, Functions & Errors database for DP 2.3 
+README FOR:  FORMLA.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  has sample DataPerfect formulas,
+functions, and error messages for DataPerfect 2.3.
+
+Self-Extracting File Name: formla.exe
+
+Files Included     Size     Date      Time
+
+..\
+      FORMLA.TXT     (This file)
+     FORMULA.D01            4096          9-1-93     11:40:00 am
+     FORMULA.D02            7168          9-1-93     11:40:00 am
+     FORMULA.IND            1536          9-1-93     11:40:00 am
+     FORMULA.STR           15360          9-1-93     11:40:00 am
+     FORMULA.TXX           48640          9-1-93     11:40:00 am
+      README.FOR            2246          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

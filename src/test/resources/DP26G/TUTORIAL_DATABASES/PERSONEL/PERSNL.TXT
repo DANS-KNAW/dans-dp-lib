@@ -1,0 +1,84 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Corporate Personnel Tracking database for DP 2.3 
+README FOR:  PERSNL.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  tracks job applicants, current
+employee status and information, and work   histories for
+DataPerfect 2.3.
+
+Self-Extracting File Name: persnl.exe
+
+Files Included     Size     Date      Time
+
+..\
+      PERSNL.TXT     (This file)
+    PERSONEL.D01             512          9-1-93     11:40:00 am
+    PERSONEL.D02             512          9-1-93     11:40:00 am
+    PERSONEL.D03            5632          9-1-93     11:40:00 am
+    PERSONEL.D04            2048          9-1-93     11:40:00 am
+    PERSONEL.D05            6144          9-1-93     11:40:00 am
+    PERSONEL.D06            1024          9-1-93     11:40:00 am
+    PERSONEL.D07             512          9-1-93     11:40:00 am
+    PERSONEL.D08             512          9-1-93     11:40:00 am
+    PERSONEL.D09             512          9-1-93     11:40:00 am
+    PERSONEL.D10             512          9-1-93     11:40:00 am
+    PERSONEL.D11             512          9-1-93     11:40:00 am
+    PERSONEL.D12             512          9-1-93     11:40:00 am
+    PERSONEL.D13            6144          9-1-93     11:40:00 am
+    PERSONEL.D14            1024          9-1-93     11:40:00 am
+    PERSONEL.D15            2560          9-1-93     11:40:00 am
+    PERSONEL.D16            1024          9-1-93     11:40:00 am
+    PERSONEL.D17            1024          9-1-93     11:40:00 am
+    PERSONEL.D18            1536          9-1-93     11:40:00 am
+    PERSONEL.D19            1536          9-1-93     11:40:00 am
+    PERSONEL.D20             512          9-1-93     11:40:00 am
+    PERSONEL.IND           71168          9-1-93     11:40:00 am
+    PERSONEL.STR          678912          9-1-93     11:40:00 am
+    PERSONEL.TXX            1024          9-1-93     11:40:00 am
+      README.PER            6274          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

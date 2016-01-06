@@ -1,0 +1,70 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Client Invoicing database for DP 2.3
+README FOR:  CLIENT.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database to be used with the DataPerfect 2.3
+Test Drive.   It will track customers, orders, purchases,
+payments, billing, invoices,   etc.
+
+Self-Extracting File Name: client.exe
+
+Files Included     Size     Date      Time
+
+..\
+      CLIENT.TXT     (This file)
+     CLIENT3.D01            1536          9-1-93     11:40:00 am
+     CLIENT3.D02             512          9-1-93     11:40:00 am
+     CLIENT3.D03             512          9-1-93     11:40:00 am
+     CLIENT3.D04             512          9-1-93     11:40:00 am
+     CLIENT3.D05             512          9-1-93     11:40:00 am
+     CLIENT3.D06             512          9-1-93     11:40:00 am
+     CLIENT3.IND            9216          9-1-93     11:40:00 am
+     CLIENT3.STR           69120          9-1-93     11:40:00 am
+     CLIENT3.TXX             512          9-1-93     11:40:00 am
+      README.CL3            4200          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

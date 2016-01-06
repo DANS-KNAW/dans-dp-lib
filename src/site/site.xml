@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="${project.name}">
+    <bannerLeft>
+        <src>images/logos/dans_dp.gif</src>
+    </bannerLeft>
+
+    <body>
+        <links>
+            <item name="DANS" href="http://www.dans.knaw.nl/" />
+            <item name="KNAW" href="http://www.knaw.nl/" />
+            <item name="NWO" href="http://www.nwo.nl/" />
+        </links>
+
+        <menu name="Documentation">
+            <item name="Overview" href="index.html" />
+            <item name="Javadocs" href="http://dans-dp-lib.sourceforge.net/apidocs/index.html" />
+            <item name="Usage" href="Dp2MySqlExport.java" />
+            <item name="References" href="references.html" />
+        </menu>
+
+        <menu name="On Sourceforge" >
+            <item name="Downloads" href="http://sourceforge.net/projects/dans-dp-lib/files" />
+            <item name="Mailing List" href="./mail-lists.html" />
+            <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=260855&amp;atid=1140769" />
+        </menu>
+
+        <menu ref="reports" />
+    </body>
+</project>

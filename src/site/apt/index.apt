@@ -1,0 +1,124 @@
+Welcome
+
+    DANS DataPerfect Library is a Java library for reading DataPerfect files.
+DataPerfect is a file-based database product, originally created by the same
+company as the well-known WordPerfect word processor.
+
+    DANS is a Dutch electronic archiving institute under the auspices of Royal
+Netherlands Academy of Arts and Sciences (KNAW) and partially funded by the Netherlands
+Organisation of Scientific Research (NWO).  It is the initiator of this
+project.  DANS is making this library available under the GNU Public Licence. For
+more information about DANS, see {{{http://www.dans.knaw.nl/en}the DANS website}}.
+This library is used by DANS for the {{{http://mixed.dans.knaw.nl}MIXED Project}}.
+
+Features
+   
+   * Access to a DataPerfect database through a simple API (a "Database" object)
+   
+   * Access to panel's field descriptions and data
+   
+   * Record data can be retrieved as String objects, formatted as in DataPerfect
+   
+   * Numerically stored data can also be retrieved in the format in which it is 
+     stored
+     
+   * Sample program: {{{./Dp2MySqlExport.java}Dp2MySqlExport.java}}.
+	
+Not Supported   
+		
+	We want to be clear about the scope of this project.  The following are some
+	features that are currently <not> supported.  Some of them may be supported in the
+	future.  If you want to contribute a feature, feel free to send us a patch proposal.
+	
+ 	* writing of DataPerfect file; if you want this feature, you will probably have to 
+ 	  fork this project.  In the current design we have not made any provisions for this 
+ 	  ever being implemented.
+	
+	* reading reports.   
+	
+	* reading user interface information.  This could be useful for a program that exports
+	  a whole dataperfect application for instance to a PHP/MySQL application (just dreaming
+	  here ...)
+	  
+	* <your feature here> 
+
+News
+
+* 4 February 2010.  Version 1.0.0!
+
+   Today we finally took the big step and released version 1.0.0.  Apart from performing numerous tests
+   on all the test data we could get hold of, we have added the following features:
+   
+   * Initialization code (such as formula's) can be retrieved.
+   
+   * The charset to be used to decode string values can now be specified; 
+     the default charset is the US DOS code page 437 (a.k.a: "IBM437")  
+     
+   * Control characters used in text are converted to printable characters.
+   
+   * Help text (special mark-up is ignored)
+   
+* 24 December 2009.  Beta 03.
+
+    Our Christmas present just before the closing of the decade: beta-03 :)  The following bugs have 
+    been fixed:
+    
+    * Mode indicators no longer cause problems.
+    
+    * Data links and panel links can now be retrieved on Field objects.
+    
+    * UU type fields are no longer rejected.
+
+* 25 November 2009.  Beta 02.
+
+   Another beta. We are starting to test with "real-world" data we find on the internet.  
+   This revealed some interesting bugs already. We are working to solve some more bugs.
+   The following things have been fixed in this beta:
+
+   * The default date and time order stored in the database are now used.
+   
+   * Fixed a bug in the reading of bytes values greater than 127.
+   
+   * Print and screen handling instructions in the format pictures no longer cause the format
+     to be rejected.
+   
+
+* 13 November 2009.  Beta 01.
+
+   Today we have release the first beta version.  All the features we want for version 1.0.0 are present.
+   They just haven't been tested thoroughly.  The new functionality includes:
+   
+   * Formatters for all data types, i.e. dates, times, numbers are formatted as in DataPerfect
+   
+   * Sample program that uses the library.  This program takes a DataPerfect database and exports it to a 
+   	 MySQL script, that can subsequently be used to recreate the database in MySQL. 
+   	 
+   * Strings from the database can now be decoded using either a caller-specified Charset or by incorporating
+     extended ASCII codes as delimited numbers in the output string.  
+
+* 23 September 2009. Alpha 04.
+ 
+   You can now retrieve the panel name.  Also, made the search for "text files" (the storage for variable
+   length fields) case insensitive.
+
+
+* 16 September 2009.  Alpha 03.
+
+    Formatting of dates and times implemented.  You can now get the date or time formatted as specified
+    by the field definition by calling Record.getValuesAsString().
+
+* 6 July 2009. Alpha 02.
+
+    Experimental support for reading variable length text fields was added.
+
+
+* 2 July 2009. Alpha 01 Released!
+
+    Finally we have got around to creating the first alpha release.  It supports reading
+the list of panels, retrieving of each panel some (by far not all) properties and
+the list of fields.  Also it is possible to iterate through the records, although we
+don't read variabele length text fields yet.
+
+    Enough work still cut out for us!  But at least you will get an idea about the
+API and how it is supposed to work.  There is no user guide yet.  Have a look at the
+unit tests to find out how to use this library.

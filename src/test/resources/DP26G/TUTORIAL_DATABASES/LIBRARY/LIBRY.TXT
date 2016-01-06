@@ -1,0 +1,71 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Library Materials Tracking database for DP 2.3 
+README FOR:  LIBRY.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  tracks library materials
+location, checkout, and return, as well as patron   information
+and history for DataPerfect 2.3.
+
+Self-Extracting File Name: libry.exe
+
+Files Included     Size     Date      Time
+
+..\
+       LIBRY.TXT     (This file)
+     LIBRARY.D01            2048          9-1-93     11:40:00 am
+     LIBRARY.D02            1024          9-1-93     11:40:00 am
+     LIBRARY.D03            1024          9-1-93     11:40:00 am
+     LIBRARY.D04             512          9-1-93     11:40:00 am
+     LIBRARY.D05             512          9-1-93     11:40:00 am
+     LIBRARY.D06             512          9-1-93     11:40:00 am
+     LIBRARY.D07             512          9-1-93     11:40:00 am
+     LIBRARY.IND           18432          9-1-93     11:40:00 am
+     LIBRARY.STR          102400          9-1-93     11:40:00 am
+     LIBRARY.TXX            1024          9-1-93     11:40:00 am
+      README.LIB            2478          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

@@ -1,0 +1,73 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Contact Manager database for DP 2.3
+README FOR:  CONTAC.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  tracks your business contacts,
+including phone calls, appointments, notes   and To-Do items for
+DataPerfect 2.3.
+
+Self-Extracting File Name: contac.exe
+
+Files Included     Size     Date      Time
+
+..\
+      CONTAC.TXT     (This file)
+    CONTACTS.D01            5120          9-1-93     11:40:00 am
+    CONTACTS.D02            1024          9-1-93     11:40:00 am
+    CONTACTS.D03            1024          9-1-93     11:40:00 am
+    CONTACTS.D04             512          9-1-93     11:40:00 am
+    CONTACTS.D05             512          9-1-93     11:40:00 am
+    CONTACTS.D06            1024          9-1-93     11:40:00 am
+    CONTACTS.D07             512          9-1-93     11:40:00 am
+    CONTACTS.D08            2560          9-1-93     11:40:00 am
+    CONTACTS.D09             512          9-1-93     11:40:00 am
+    CONTACTS.IND           37376          9-1-93     11:40:00 am
+    CONTACTS.STR          125440          9-1-93     11:40:00 am
+    CONTACTS.TXX            2560          9-1-93     11:40:00 am
+      README.CON            5123          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

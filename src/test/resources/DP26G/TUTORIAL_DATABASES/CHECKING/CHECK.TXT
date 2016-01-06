@@ -1,0 +1,69 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Checkbook Management database for DP 2.3
+README FOR:  CHECK.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  tracks checking account deposits,
+drafts, and balances for DataPerfect 2.3.
+
+Self-Extracting File Name: check.exe
+
+Files Included     Size     Date      Time
+
+..\
+       CHECK.TXT     (This file)
+    CHECKING.D01            4608          9-1-93     11:40:00 am
+    CHECKING.D02             512          9-1-93     11:40:00 am
+    CHECKING.D03             512          9-1-93     11:40:00 am
+    CHECKING.D04            2560          9-1-93     11:40:00 am
+    CHECKING.D05             512          9-1-93     11:40:00 am
+    CHECKING.D06             512          9-1-93     11:40:00 am
+    CHECKING.IND           10240          9-1-93     11:40:00 am
+    CHECKING.STR           84480          9-1-93     11:40:00 am
+    CHECKING.TXX            2048          9-1-93     11:40:00 am
+      README.CHK            3102          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+

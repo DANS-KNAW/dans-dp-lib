@@ -1,0 +1,28 @@
+References
+
+* DataPerfect
+
+    * {{{http://dataperfect.nl/CMS/index.php} DataPerfect website}}.
+
+    * {{{ftp://ftp.corel.com/pub/WordPerfect/old_wp_products/dataperfect/}Sample databases on Corel website}}.
+
+* Structure File Format
+
+    * Description of the .STR file format by Lew Bastian {{{http://www.dataperfect.nl/CMS/index.php?option=content&task=view&id=3} here}}.
+
+    * Saved copy in text format {{{./lew_bastian.txt}here}}.
+
+    * STR format description compiled by us based on Bastian's document and further investigation of example files {{{./STR Format.odt}here}}.
+
+* Development Tools
+
+    * {{{http://www.dosbox.com/}DosBox}}
+
+    * DataPerfect Program.  (Can be downloaded from the DataPerfect website.)
+
+* Other Projects By DANS
+
+    * {{{http://dans-dbf-lib.sourceforge.net/}DANS DBF Library}}.  This is a library to read and write DBF files.  DBF files are
+      the files used by the well-known dBase database and its dialects such as Clipper and FoxPro.
+
+    * {{{http://mixed.dans.knaw.nl}The MIXED Project}}.  A framework that stores tabular achival data in a durable XML format.

@@ -1,0 +1,347 @@
+Format of .STR file    	
+
+From the mailinglist (by Lew Bastian, Feb. 7, 2001)
+
+The .STR file holds the structural information about the users database.
+It is a DataPerfect "text" file. The others are:
+DP.SYS, which holds the system menus and word phrases.
+The .TXX file, which holds the data stored in all user text fields.
+The temporary text file TX{{dddd.TMP, which holds temporary record data
+during record create/edit operations and report execution.A text file is organized into subblocks that are 32 bytes in size.
+Most pointers within a text file are 3 bytes long.
+The first 32 bytes (block 0) holds standard WP header data.
+Available space in the text file is organized into chains.
+Blocks 1 & 2, 64 bytes, hold a list of 21 3-byte block numbers.
+The i-th entry in this list is the root of the chain of block groups of
+length i. The last chain holds all groups bigger than 20 blocks.
+Each block group has 4 bytes of overhead when allocated.
+The second 2-byte field holds the actual record length in bytes.
+The first 2-byte field holds the # of blocks in the immediately
+preceding group, whether allocated or not. This is used to coalesce
+groups as they are freed.
+When free, the 2nd field is 0, and the 3rd 2-byte field holds length in
+blocks. Then next 6 bytes form two 3-byte pointers, pointing to the next
+and the previous block groups in the free space chain.
+A text file is initialized by clearing the first 3 blocks to 0.
+================================
+
+Now for the particulars of the .STR file.
+
+Text block #3 - 57 bytes - in structure file .STR has following format:
+
+"First 5 bytes as usual:" 2 bytes for the number of 32 byte blocks in the
+preceding block group, 2 bytes for remaining length in bytes, and 1 byte,
+the fifth byte, is used as a counter for # of users in report setup
+-- this is the byte at offset 100 of the file using 0-origin arithmetic.
+It will always be 0 when the .STR file is not in use.
+
+Continuing to use 0 origin arithmetic the first byte is byte 0, not 1,)
+here is the meaning of the sequence of 3-byte pointers that come next. In
+each case the description is of the area pointed to.
+
+5 - not used.
+ptr1-menu1, ptr2-panel.list, others available.
+8 - a block holding 4 3-byte pointers to 256-byte printer maps.
+
+11 - Constant areas:
+1. SORTTAB 2. UCASETAB 3. ALTMAP 4. CTRLMAP
+5. month abreviations.
+6. defaults for colors, computationals, dates & times.
+15-btes allocated, 13 used for: colors1-4, menu.edit.color,
+period, comma,
+ymd, hms, line0, date0type, autohelp, report.display.on/off.
+7. userID panel#.
+14 - List of pointers to panels.
+17 - passwords, etc..
+1. definer password.
+2. supervisor password.
+3. user password
+20 - reserved for global macros - never implemented.
+23 - List of pointers to reports.
+26 - variables - never implemented
+29 - transaction journal filename.
+32 - developer banner.
+35 - 510 byte block:
+Bytes 2-299 hold the three-byte hot list blk#'s for panels 1-99.
+These are lists used to rapidly propagate computational interactions.
+
+THE FOLLOWING WILL BE CLEANED UP LATER. I just wanted to post this quickly.
+============
+Formula definitions:
+Formulas have a two byte length - just as other text fields
+The formula consists of types, value specifiers and operators
+The formula types are 1 - Value, 2 Range, 3 Formula, 4 Table
+If the type is value, then the data value follows
+If type is range, then two data values follow
+If type is formula, a 3-byte pointer to the formula code follows,
+then a 3-byte pointer to the source text
+If the type is table, ?? -- not used.
+Value specifiers are followed by bytes
+140 - character string <1+lnth>
+142 - date <2>, 143 - text <3>,
+144 - number <4>, 148 - number <8>,
+130 - case value CV
+131 - 2-byte report variable specifier
+132 - field path string
+the field path string starts with a length byte, then has pairs of bytes
+panel-field, panel-field, ...
+
+operators 8-33 are unary, 8-29 return a #, 30-33 return T/F
+34-55 are binary, 34-49 return a #, 50-55 return T/F
+the operators are
+6 - rparen (no operation -- for decompilation ease only)
+7 - left parenthesis (no operation -- for decompilation ease only)
+8 unary - 24 today 40 CASE 56
+9 unary + 25 now 41 OF 57 ENDCASES = restore CV
+10 abs. value 26 42 ENDOF 58 today - old
+11 27 carriage ret 43 DEFAULT 59 CASES = save CV
+12 log 28 pi 44 60 IF = nop
+13 ln 29 cat&trunc 45 61 jump = ELSE & ENDOF
+14 floor 30 catenate 46 62 jump if 0 THEN/OF
+15 ceiling 31 #NOT# 47 63 ENDIF = nop
+16 sin 32 #AND# 48 64 min
+17 cos 33 #OR# 49 65 max
+18 tan 34 + 50 = 66 1st n-day
+19 arctan 35 - 51 <> 67 last n-day
+20 arcsin 36 * 52 <= 68 first day
+21 arccos 37 / 53 >= 69 last day
+22 e^x 38 // 54 < 70 year
+23 39 ^ power 55 > 71 month
+
+72 day
+73 day of week
+74 date
+75 sqrt
+76 user.field[n] -- get field n of user ID record position 33 in DATA.MSG
+77 not.used
+78 apply format: value and picture are on stack
+79 convert: picture & char.string are on stack
+80 truncate: char string on stack
+81 substring - string,n1,n2 on stack base 1
+82 search - mask;field
+83 not used because ABS is here it DATA.MSG
+84 round - value;control
+85 not used because CAT.T is here in DATA.MSG
+86 not used because CAT.C is here in DATA.MSG
+87 is length
+88 is subfield
+89 not used because LN is here in DATA.MSG
+90 not used because EXP is here in DATA.MSG
+91 FV - future value
+92 PMT - payment
+93 PV - present value
+94 RATE
+95 TERM
+
+The formulas are stored in polish postfix form, 3+5*7 => 3 5 7 * +
+But they will be displayed and edited in infix form.
+The operator precedence is
+#OR# #AND# #NOT# [<,>,<=,>=,=,<>] [+,-] [*,/] ^ [unary -,+]
+2 3 4 5 6 7 8 9 )
+
+============
+Panel definitions:
+The panel header is:
+Offset length Usage
+0 2 length
+2 1 type: always 1
+3 1 panel#
+4 2 record length LRECL
+6 3 textfile index for filename
+9 1 color
+10 1+1 x = column & y = row position of upper left hand corner
+12 1+1 width & length of area inside box
+14 2 offset to field list
+16 2 offset to field extension data
+18 3 textfile pointer for panel text
+21 1 flags
+22 1 field color
+23 1 color of field being edited
+24 2 not used
+26 3 ptr to picture display info
+29 3 ptr to title
+32 4 x y w h for lookup area
+36 2 offset to index list
+
+flags
+01 - 1 => auto save when return is hit on last field
+02 - 1 => auto create on change if bit 80 is also 1
+04 - 1 => at least one index is empty
+08 - 1 => show panel during lookup
+20 = 32 - 1 => this panel does totaling - set by DISP-SET1
+40 = 64 - 1 => panel is valid
+80 = 128 - 0 => auto edit on change
+
+Index structure starts at offset 38
+0 1 2 3 6
+lnth index# flags index.base.blk# field.string exception.string
+exception.string only present for exception only index
+
+flags
+01 - 0 if not yet allocated
+02 - 1 if redefined or cleared - needs to be regenerated
+04 - exception only index
+08 - used by BREPLACE to indicate that index needs delete-insert
+10 - used by IND-GEN to indicate index is being regenerated
+20 - used by IND-GEN -- flips every 10 seconds to indicate regen is alive
+
+Field structure 8-bytes
+0 1 2 3 4 6
+field# flags1 flags2 lnth offset fptr
+
+Flags1 - byte 1
+01 - real/virtual -- on means virtual
+02 - down arrow door defined --- 03 means door only field
+04 - 0 = character, 4 = date
+08 - 12 = binary or time, 28 = floating packed
+16 - 8 = text
+32 - field has total target
+64 - editing not allowed
+128 - must be not zero/blank
+
+flags2 - byte 2
+01 - initial on create
+02 - initial on create save 3 means recompute hot
+04 - value check at edit
+08 - value check at save
+16 - search field list defined
+32 - n-type field - used in index key generation
+64 - hidden
+128 - auto increment
+
+byte 3 - if a character field, this holds the length in the record
+for binary G,H numbers this is the decimal scale -- length is 4 bytes
+for N numbers, packed & binary, this is the number of digits for index
+for dates, times, textpointers, and G packed numbers, this is 0
+
+offset - bytes 4&5 = offset within record for field
+fptr - bytes 6&7 = offset within field extension data for this field
+
+FIELD EXTENSION DATA use PEXT and FIND-TYPE to access
+Has general form:
+0 1 3 6 7 8 9 10 11 ...
+Lnth x, y, help, flags, left right up down types:
+type lnth ... type lnth ... type lnth ... ....
+Lnth is overall length -- doesn't include itself
+lnth is length of string that follows -- doesn't include type or itself
+x & y are each 1 byte, help is 3 bytes,
+flags
+01 - 1 = auto-enter
+02 - 2 = right-justify
+04 -
+128 -
+
+Type 1 - lnth t1 pf1 tf1 < ti pfi tfi > - used for total target
+groups of 3 bytes --- lnth is multiple of 3
+means follow field pf# in this panel to field tf# in the target panel
+Type 2 - field value list = 3-byte pointer into .STR file
+Type 3 - initialization - 7-bytes -- see below
+Type 4 - edit check - 7-bytes
+Type 5 - picture MUST BE THE FIRST TYPE IN EXTENSION for copy field
+Type 6 - search list of which first byte is length
+Type 7 - door definition:
+length, panel#, field#, index#, flags, field.list, auto.disp
+flags defined: first 3 bits: not found spec:
+0 - auto-create, 1 - create menu, 2 - no create allowed
+3 - Don't Check on entry, 4 - no access
+bit 3 is reserved - 8
+bit 4 is on for doors with windows
+bits 5 & 6 indicate Referential Integrity - Cascade Update/Delete
+bit 5 - Auto-Update Dependent Records - 32
+bit 6 - Auto-Delete Dependent Records - 64
+bit 4 is Auto Lookup Display - 16
+If bit 4 is on, auto.disp is 5 bytes: aldflags,x,y,w,h
+-- see type 11 also
+If bit 4 is off, auto.disp is 0 bytes
+Bit 1 of aldflags is border on - 1
+Bit 2 of aldflags is show from bottom - 2
+Type 8 - 8-bytes next packed decimal value for auto increment field
+Type 9 - lookup list - length,index,fields
+Type 10 - 10 2 display.length display.depth
+Type 11 - auto lookup list used with type 7 - length, fields in other panel
+Type 12 - field name: lnth.byte name
+
+Note that types 1 & 3 are currently available for display only fields
+definition only supports type 3
+
+Types 3 & 4 are type, lnth, kind, 3-byte pointer1, 3-byte pointer2
+Kinds: 1 value, 2 range, 3 formula --- pointer2 is 0 for kinds 1 & 2
+For kinds 1 & 2 pointer1 points to text: lnth value
+For kind3 ptr1 is formula, ptr2 is source
+the 7-bytes is subtype.byte, two 3-byte pointers
+
+DISPLAY INFO SECTION
+Format: overall length, disp1, disp2, ...
+Note: there is no ending 0
+Each disp is: x,y,picture -- where picture includes a length byte
+When a panel is to be displayed, we check to see if its display section
+is in memory; if not, any current one is replaced with the current one.
+At that time we also build a map of field numbers to display section
+offsets using the extension data.
+
+============
+Report Definitions:
+A report is a very complicated structure. The root of the structure is
+the report header with fields
+0 length 0 2 bytes
+2 not used ? one byte
+3 panel# 2 bytes
+5 name 3 bytes
+8 text 3 bytes -- This is the actual report execution definition.
+11 LEFTMARGIN 1 byte
+12 index# 1 byte
+13 PAGEWIDTH 2 bytes
+15 TOPMARGIN 1 byte
+16 REPMODE 1 byte 15 AND
+16 WPMODE? 1 byte 16 AND
+16 lookup, all real, all display 1 byte 96 AND
+16 column text wrapped 1 byte 128 AND -- for menus this is REPMMODE
+17 #LINES 2 bytes
+19 BOTMARGIN 2 bytes
+21 SELECT? 1 byte 64 AND -- not used currently
+21 REPTARGET REP.ADR 1 byte 7 AND
+21 CRE/APP 1 byte 8 AND
+21 SRCH? 1 byte 16 AND
+21 EXCLUDE 1 byte 32 AND
+21 REPDIR 1 byte 128 AND
+22 EXCHAR 1 byte
+23 EXCHAR2 1 byte
+24 filename 3 bytes
+27 search 3 bytes
+30 Printer# 1 byte
+33 User authorization list 3 bytes (not used?)
+==============
+Report execution definition:
+This is just text with interspersed commands that have the form:
+254 2-byte-lnth 1-byte-type data
+The types are:
+1 - section
+2 - field
+11 - EJECT
+12 - conditional eject
+13 - skip to bottom of page
+14 - multiple recs/line
+15 - 2-level report spec
+19 - skip record form is 254 2 19 rv#
+20 - store value in rv form is 254 8 20 rv# formula.ptr text.ptr )
+21 - prompt for rv value
+( form is 254 len 21 rv# len2 msg len3 format ) ( len=len2+len3+4 )
+22 - report subgroup form is 254 4 22 0 0 0
+23 - delete/cancel record is 254 2 23 0
+24 - skip other header if 2lvl header waiting is 254 2 24 0
+25 - set page no. is 254 2 25 n ( may be 1 or 2 bytes )
+26 - ( skip.to.rec form is 254 2 26 rv# )
+27 - ( stop.rep form is 254 2 27 rv# )
+28 - ( lookup is 254 2 28 0 )
+29 - ( print/file on/off is 254 2 29 n )
+( n is 1,2,3,4 for print off/on file off/on )
+30 - ( repeat form is 254 2 30 rv# )
+31 - ( open file form is 254 2 31 rv# )
+32 - ( include file form is 254 2 32 rv# )
+63 - subreport ( 254 8 63 pan# former.pan# door# i 0 rep.sec 0 )
+For dynamic link: 254 n 63 pan# former.pan# 0 0 index# rep.sec list
+64 - tab
+65 - no blank line
+66 - bold / underline
+67 - printer control string 254 n 67 0 n-2.char.string
+Last Updated ( Monday, 28 February 2005 )

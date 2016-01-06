@@ -1,0 +1,72 @@
+NOVELL TECHNICAL INFORMATION DOCUMENT
+
+TITLE:  Loan Calculator database for DP 2.3
+README FOR:  LOAN.EXE
+
+NOVELL PRODUCTS and VERSIONS:
+DataPerfect 2.3 for DOS
+
+ABSTRACT:
+
+This document was auto-generated for a file without an abstract. 
+See the issue section for a description of the file
+
+
+
+-----------------------------------------------------------------
+ DISCLAIMER
+ THE ORIGIN OF THIS INFORMATION MAY BE INTERNAL OR EXTERNAL TO
+NOVELL.  NOVELL
+ MAKES EVERY EFFORT WITHIN ITS MEANS TO VERIFY THIS INFORMATION. 
+HOWEVER, THE
+ INFORMATION PROVIDED IN THIS DOCUMENT IS FOR YOUR INFORMATION
+ONLY.  NOVELL
+ MAKES NO EXPLICIT OR IMPLIED CLAIMS TO THE VALIDITY OF THIS
+INFORMATION.
+
+-----------------------------------------------------------------
+
+
+ISSUE: 
+
+This is a sample database that  calculates loan and amortization
+information for DataPerfect 2.3.
+
+Self-Extracting File Name: loan.exe
+
+Files Included     Size     Date      Time
+
+..\
+        LOAN.TXT     (This file)
+          LOAN.1             512          9-1-93     11:40:00 am
+          LOAN.2             512          9-1-93     11:40:00 am
+          LOAN.3             512          9-1-93     11:40:00 am
+          LOAN.4             512          9-1-93     11:40:00 am
+          LOAN.5             512          9-1-93     11:40:00 am
+          LOAN.6             512          9-1-93     11:40:00 am
+          LOAN.7             512          9-1-93     11:40:00 am
+          LOAN.8             512          9-1-93     11:40:00 am
+          LOAN.9             512          9-1-93     11:40:00 am
+        LOAN.IND            5120          9-1-93     11:40:00 am
+        LOAN.STR          132096          9-1-93     11:40:00 am
+        LOAN.TXX             512          9-1-93     11:40:00 am
+      README.LOA            5061          9-1-93     11:40:00 am
+
+
+Installation Instructions:
+
+This document was auto-generated for a file without installation
+instructions.  See the issue section for an explanation of any
+special installation instructions.
+
+
+
+-----------------------------------------------------------------
+ Any trademarks referenced in this document are the property of
+their
+ respective owners.  Consult your product manuals for complete
+trademark
+ information.
+
+-----------------------------------------------------------------
+
