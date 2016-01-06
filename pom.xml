@@ -28,21 +28,9 @@
         <name>DANS</name>
         <url>http://www.dans.knaw.nl/en</url>
     </organization>
-
-    <mailingLists>
-        <mailingList>
-            <archive>https://sourceforge.net/mailarchive/forum.php?forum_name=dans-dp-lib-users</archive>
-            <name>dans-dp-lib-users</name>
-            <post>dans-dp-lib-users@lists.sourceforge.net</post>
-            <subscribe>https://lists.sourceforge.net/lists/listinfo/dans-dp-lib-users</subscribe>
-            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/dans-dp-lib-users</unsubscribe>
-        </mailingList>
-    </mailingLists>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <developers>
         <developer>
             <name>Jan van Mansum</name>
@@ -75,26 +63,6 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <site>
-            <id>local</id>
-            <name>DANS DataPerfect Library Local Test Site</name>
-            <url>file://${user.home}/Temp/dans-dp-lib-site/</url>
-        </site>
-    </distributionManagement>
-    <profiles>
-        <profile>
-            <id>production</id>
-            <distributionManagement>
-                <site>
-                    <id>sourceforge-dans-dp-lib</id>
-                    <name>DANS DataPerfect Library SourceForge Site</name>
-                    <url>scp://shell.sourceforge.net:/home/groups/d/da/dans-dp-lib/htdocs</url>
-                </site>
-            </distributionManagement>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -116,11 +84,18 @@
                         <email>info@dans.knaw.nl</email>
                     </properties>
                     <excludes>
+                        <exclude>LICENSE</exclude>
                         <exclude>**/README</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals><goal>check</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -173,10 +148,4 @@
             </plugin>
         </plugins>
     </build>
-    <licenses>
-        <license>
-            <name>GNU Public License</name>
-            <url>http://www.gnu.org/copyleft/gpl.html</url>
-        </license>
-    </licenses>
 </project>
