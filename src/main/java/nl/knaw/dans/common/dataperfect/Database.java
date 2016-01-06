@@ -478,7 +478,7 @@ public class Database
 
     /**
      * Sets the strings with which to delimit extended ASCII characters. For instance, if and
-     * extended ASCII character with numeric value 130 was encountered in the string "caf&eacute",
+     * extended ASCII character with numeric value 130 was encountered in the string "café",
      * and the start delimiter is "&lt;char code=" and the end delimiter is "/&gt;", the resulting
      * string will be
      *
