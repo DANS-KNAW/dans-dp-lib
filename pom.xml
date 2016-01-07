@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2009 DANS (info@dans.knaw.nl)
+    Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
     <version>1.0.1-SNAPSHOT</version>
     <name>DANS DataPerfect Library</name>
     <url>http://dans-dp-lib.sourceforge.net/</url>
-    <inceptionYear>2009</inceptionYear>
+    <inceptionYear>2009-2016</inceptionYear>
     <organization>
         <name>DANS</name>
         <url>http://www.dans.knaw.nl/en</url>
@@ -80,7 +80,7 @@
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
-                        <owner>DANS</owner>
+                        <owner>DANS - Data Archiving and Networked Services</owner>
                         <email>info@dans.knaw.nl</email>
                     </properties>
                     <excludes>
