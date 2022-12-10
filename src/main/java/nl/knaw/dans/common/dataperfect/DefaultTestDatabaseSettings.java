@@ -16,36 +16,55 @@
  */
 package nl.knaw.dans.common.dataperfect;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
- * Represents the 4th block group (at position 3 in the file). This blockgroup is at the root of all
- * the data we are interested in. That is to say, it contains the pointers to the other interesting
- * blockgroups.
+ * Mock {@link DatabaseSettings} implementation.
  *
  * @author Jan van Mansum
  */
-final class BlockGroup3
-    extends AbstractBlockGroup
+final class DefaultTestDatabaseSettings
+    implements DatabaseSettings
 {
-    final int blkPrinterMaps;
-    final int blkConstants;
-    final int blkPanels;
+    static final DefaultTestDatabaseSettings INSTANCE = new DefaultTestDatabaseSettings();
 
-    BlockGroup3(final StructureFile structureFile)
-         throws IOException
+    private DefaultTestDatabaseSettings()
     {
-        super(3, structureFile);
-
         /*
-         * We do not know what the next 4 bytes are used for.
+         * Don't instantiate yourself, just use the INSTANCE singleton.
          */
-        structureFile.skipBytes(4);
+    }
 
-        blkPrinterMaps = structureFile.readBlockNumber();
-        blkConstants = structureFile.readBlockNumber();
-        blkPanels = structureFile.readBlockNumber();
+    public String getDefaultDateOrder()
+    {
+        return null;
+    }
 
-        // TODO: Read the rest of the group 3 fields.
+    public String getDefaultTimeOrder()
+    {
+        return null;
+    }
+
+    public String getExtAsciiCodeEndDelimiter()
+    {
+        return null;
+    }
+
+    public String getExtAsciiCodeStartDelimiter()
+    {
+        return null;
+    }
+
+    public void setCharset(final Charset charset)
+    {
+    }
+
+    public void setExtAsciiCodeDelimiters(final String start, final String end)
+    {
+    }
+
+    public String getCharsetName()
+    {
+        return null;
     }
 }

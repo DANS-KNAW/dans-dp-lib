@@ -1,17 +1,18 @@
-/**
- * Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
+/*
+ * Copyright 2009 Data Archiving and Networked Services (DANS), Netherlands.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This file is part of DANS DataPerfect Library.
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * DANS DataPerfect Library is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * DANS DataPerfect Library is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with DANS DataPerfect
+ * Library. If not, see <http://www.gnu.org/licenses/>.
  */
 package nl.knaw.dans.common.dataperfect;
 
@@ -48,7 +49,6 @@ public class Panel
     /**
      * Opens the panel for reading. If the the <tt>autoOpenPanels</tt> property of {@link Database}
      * is set to <tt>true</tt> the panel is opened automatically.
-     *
      * @throws IOException if the database cannot be opened
      */
     public void open()
@@ -60,7 +60,6 @@ public class Panel
                 new DataFile(properties.getFile(),
                              properties.getRecordSize(),
                              database.databaseSettings);
-
             dataFile.open();
             recordCount = dataFile.readNumberOfRecords();
         }
@@ -85,7 +84,7 @@ public class Panel
     }
 
     /**
-     * Returns the file that stores the records of this panel. Large size fields are not stored in
+     * Returns the file that store the records of this panel. Large size fields are not stored in
      * this file, but in a shared file. However, the panel file is important because its name is
      * used as the table name in the case that the panel has no explicit name.
      *
@@ -142,6 +141,18 @@ public class Panel
     }
 
     /**
+     * Returns the list of fields
+     *
+     * @param includePanelLinks indicates whether panel link fields will be included
+     * in the field list
+     * @return the list of fields
+     */
+    public List<Field> getFields(final boolean includePanelLinks)
+    {
+        return properties.getFields(includePanelLinks);
+    }
+
+    /**
      * Returns a record iterator.
      *
      * @return a record iterator
@@ -186,7 +197,7 @@ public class Panel
 
                 public void remove()
                 {
-                    throw new UnsupportedOperationException("Modification of the database not supported");
+                    throw new UnsupportedOperationException("Modification of the databse not supported");
                 }
             };
     }
@@ -204,13 +215,6 @@ public class Panel
         {
             Object value = null;
 
-            if (isPanelLink(field) || field.isComputedField())
-            {
-                fieldToValueMap.put(field, null);
-
-                continue;
-            }
-
             dataFile.jumpToRecordField(recordIndex,
                                        field.getOffsetInRecord());
 
@@ -223,10 +227,7 @@ public class Panel
                     break;
 
                 case AA:
-                case AU:
-                case UU:
-                case UA:
-                    value = database.readFromTextFile(dataFile.readBlockNumber());
+                    value = database.readFromTextFile(dataFile.readBlockNumber()); //TODO hier landet es falsch
 
                     break;
 
@@ -268,16 +269,6 @@ public class Panel
         }
 
         return new Record(fieldToValueMap);
-    }
-
-    private boolean isPanelLink(final Field field)
-    {
-        if (field.getLink() != null && field.getLink().getType() == LinkType.PANEL_LINK)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     // TODO: implement other properties

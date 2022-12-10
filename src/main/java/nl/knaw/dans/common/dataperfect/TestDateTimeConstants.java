@@ -16,25 +16,40 @@
  */
 package nl.knaw.dans.common.dataperfect;
 
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
 
-/**
- * Keys for the default settings map in {@link Database}.
- *
- * @author Martin Braaksma
- */
-enum DefaultSettings
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+
+public class TestDateTimeConstants
 {
-    COLOR_1,
-    COLOR_2,
-    COLOR_3,
-    COLOR_4,
-    MENU_EDIT_COLOR,
-    PERIOD,
-    COMMA,
-    YMD,
-    HMS,
-    LINE_0,
-    DATE_0_TYPE,
-    AUTO_HELP,
-    REPORT_DISPLAY;
+    private Database database;
+
+    @Before
+    public void setUp()
+               throws Exception
+    {
+        database = new Database(new File("src/test/resources/DP26G/D_T/MEMBERS.STR"));
+        database.open();
+    }
+
+    @After
+    public void tearDown()
+                  throws Exception
+    {
+        database.close();
+    }
+
+    @Test
+    public void testConstants()
+                       throws Exception
+    {
+        assertEquals("MDY",
+                     database.getDefaultDateOrder());
+        assertEquals("HMS",
+                     database.getDefaultTimeOrder());
+    }
 }

@@ -1,17 +1,18 @@
-/**
- * Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
+/*
+ * Copyright 2009 Data Archiving and Networked Services (DANS), Netherlands.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This file is part of DANS DataPerfect Library.
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * DANS DataPerfect Library is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * DANS DataPerfect Library is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with DANS DataPerfect
+ * Library. If not, see <http://www.gnu.org/licenses/>.
  */
 package nl.knaw.dans.common.dataperfect;
 
@@ -27,12 +28,6 @@ final class TextFile
     extends DataPerfectFile
 {
     private static final int OFFSET_LENGTH_DATA = 2;
-    private static final int NEWLINE_CODE = 0xff;
-
-    /*
-     * Not exactly clear what this does, but we have to skip some bytes when we encounter it.
-     */
-    private static final int MARKUP_CODE = 0xfe;
 
     TextFile(final File file, final DatabaseSettings databaseSettings)
     {
@@ -48,38 +43,28 @@ final class TextFile
         final int totalLength = readUnsignedShort();
         final long endPosition = totalLength + raFile.getFilePointer();
         final byte[] buffer = new byte[totalLength];
-        final StringBuilder stringBuilder = new StringBuilder(totalLength);
+        byte[] iso88591buffer = new byte[totalLength]; //TODO
+
+        int position = 0; 
 
         while (raFile.getFilePointer() < endPosition)
         {
-            int subBlockStartByte = 0xff & readByte();
+            int subBlockLength = 0xff & readByte();
 
-            while (subBlockStartByte == NEWLINE_CODE || subBlockStartByte == MARKUP_CODE)
+            while (subBlockLength == 0xff)
             {
-                if (subBlockStartByte == MARKUP_CODE)
-                {
-                    skipBytes(6);
-                }
-                else if (subBlockStartByte == NEWLINE_CODE)
-                {
-                    stringBuilder.append('\n');
-                }
-
-                subBlockStartByte = readByte();
+                buffer[position++] = '\n';
+                subBlockLength = 0xff & readByte();
             }
 
-            /*
-             * If it is not a special code, the start code is the length of the subblock.
-             */
-            raFile.read(buffer, 0, subBlockStartByte);
+            raFile.read(buffer, position, subBlockLength);
+            iso88591buffer = new String (buffer).getBytes("UTF-8");   //hola!!! das geht nicht!
 
-            final String bufferString = new String(buffer,
-                                                   0,
-                                                   subBlockStartByte,
-                                                   databaseSettings.getCharsetName());
-            stringBuilder.append(replaceNonPrintableCharacters(bufferString));
+            //valueUtf8 = new String(buffer, "ISO-8859-1").getBytes("UTF-8");
+            //valueUtf8 = new String(buffer, "Windows-1252").getBytes("UTF-8");
+           position += subBlockLength;
         }
 
-        return stringBuilder.toString();
+        return new String(buffer, 0, position, "Windows-1252"); // hiermit sind schon mal alle Umlaute eindeutig!
     }
 }

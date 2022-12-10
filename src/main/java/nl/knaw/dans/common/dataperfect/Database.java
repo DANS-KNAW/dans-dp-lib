@@ -1,28 +1,26 @@
-/**
- * Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
+/*
+ * Copyright 2009 Data Archiving and Networked Services (DANS), Netherlands.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This file is part of DANS DataPerfect Library.
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * DANS DataPerfect Library is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * DANS DataPerfect Library is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with DANS DataPerfect
+ * Library. If not, see <http://www.gnu.org/licenses/>.
  */
 package nl.knaw.dans.common.dataperfect;
 
 import nl.knaw.dans.common.dataperfect.BlockGroupPanelDefinition.DoorDefinition;
-import nl.knaw.dans.common.dataperfect.BlockGroupPanelDefinition.Initialization;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +42,7 @@ import java.util.Map;
  * neither of these is provided, the default character encoding on the JVM running the code will be
  * used.
  *
+ * @see #setCharset(String)
  * @see #setExtAsciiCodeDelimiters(String, String)
  *
  * @author Jan van Mansum
@@ -51,7 +50,6 @@ import java.util.Map;
  */
 public class Database
 {
-    private static final String DEFAULT_CHARSET_NAME = "IBM437";
     private final StructureFile structureFile;
     private final List<Panel> panelList = new ArrayList<Panel>();
     private final Map<String, Panel> namePanelMap = new HashMap<String, Panel>();
@@ -97,50 +95,7 @@ public class Database
     }
 
     /**
-     * Creates a new database object and sets a custom charset.
-     *
-     * @param structureFile the database structure file
-     * @param charsetName the database charset
-     * @throws FileNotFoundException if the file is not found
-     * @throws InvalidStructureFileException if the file is not a valid structure file
-     */
-    public Database(final File structureFile, final String charsetName)
-             throws FileNotFoundException, InvalidStructureFileException
-    {
-        this.structureFile = new StructureFile(structureFile, databaseSettings);
-
-        if (charsetName == null)
-        {
-            if (Charset.isSupported(DEFAULT_CHARSET_NAME))
-            {
-                this.charsetName = DEFAULT_CHARSET_NAME;
-            }
-            else
-            {
-                this.charsetName = Charset.defaultCharset().name();
-            }
-        }
-
-        if (! Charset.isSupported(charsetName))
-        {
-            throw new UnsupportedCharsetException("The given charset is not supported.");
-        }
-
-        this.charsetName = charsetName;
-
-        final String structureFileName = structureFile.getName();
-
-        if (! structureFileName.toLowerCase().endsWith(".str") || structureFileName.length() <= ".str".length())
-        {
-            throw new InvalidStructureFileException("Structure file name must end with .STR and have at least one more character");
-        }
-
-        final TextFileFinder textFileFinder = new TextFileFinder(structureFile, databaseSettings);
-        textFile = textFileFinder.find();
-    }
-
-    /**
-     * Creates a new database object and sets IBM437 (DOS-US) as the default charset.
+     * Creates a new database object.
      *
      * @param structureFile the database structure file
      * @throws FileNotFoundException if the file is not found
@@ -149,7 +104,18 @@ public class Database
     public Database(final File structureFile)
              throws FileNotFoundException, InvalidStructureFileException
     {
-        this(structureFile, DEFAULT_CHARSET_NAME);
+        this.structureFile = new StructureFile(structureFile, databaseSettings);
+
+        final String structureFileName = structureFile.getName();
+
+        if (! structureFileName.toLowerCase().endsWith(".str") || structureFileName.length() <= ".str".length())
+        {
+            throw new InvalidStructureFileException("Structure file name must end with .STR and have at least one more character");
+        }
+
+        final TextFileFinder textFileFinder = new TextFileFinder( new File ("/home/fam/Downloads/dp/"),//structureFile.getPath()),
+                                                                 databaseSettings);
+        textFile = textFileFinder.find();
     }
 
     /**
@@ -210,52 +176,46 @@ public class Database
         {
             final BlockGroupPanelDefinition bgPanelDef =
                 new BlockGroupPanelDefinition(panelIterator.next(), structureFile);
-
             final String panelFileName = new BlockGroupString(bgPanelDef.blkPanelFileName, structureFile).value;
-
-            File panelFile = findPanelFile(panelFileName);
-
-            if (panelFile == null)
-            {
-                throw new FileNotFoundException("Panel file not found: " + panelFileName);
-            }
-
             final String panelName = new BlockGroupString(bgPanelDef.blkPanelName, structureFile).value;
 
             try
             {
-                final List<Field> fields = readFields(bgPanelDef.fieldInfoList, bgPanelDef.fieldExtDataList);
+                final List<Field> fieldsWithPanelLinks =
+                    readFields(bgPanelDef.fieldInfoList, bgPanelDef.fieldExtDataList);
 
                 final Panel panel =
                     new Panel(this,
                               new PanelProperties() //
                     .withName(panelName) //
-                    .withFile(panelFile) //
+                    .withFile(new File(structureFile.getDirectory(),
+                                       panelFileName)) //
                     .withRecordSize(bgPanelDef.recordLength) //
-                    .withFields(fields) //
+                    .withFields(fieldsWithPanelLinks) //
                     .withX(bgPanelDef.x) //
                     .withY(bgPanelDef.y)); //
 
                 panelList.add(panel);
 
-                if (! "".equals(panelName))
+                if (panelName != null)
                 {
                     namePanelMap.put(panelName, panel);
                 }
 
-                fileNamePanelMap.put(panelFileName.toUpperCase(),
-                                     panel);
+                fileNamePanelMap.put(panelFileName, panel);
             }
             catch (final InvalidFormatException invalidFormatException)
             {
                 throw new InvalidFormatException(invalidFormatException.getMessage() + " on panel " + panelFileName);
             }
+
+            // TODO: map to name as well, if there is a name
         }
     }
 
     private List<Field> readFields(final List<BlockGroupPanelDefinition.SubblockFieldInfo> fieldInfoList,
                                    final List<BlockGroupPanelDefinition.SubblockFieldExtensionData> fieldExtDataList)
-                            throws InvalidFormatException, IOException
+                            throws InvalidFormatException
     {
         final Iterator<BlockGroupPanelDefinition.SubblockFieldInfo> fieldInfoIterator = fieldInfoList.iterator();
         final Iterator<BlockGroupPanelDefinition.SubblockFieldExtensionData> fieldExtDataIterator =
@@ -271,9 +231,6 @@ public class Database
              */
             final BlockGroupPanelDefinition.SubblockFieldExtensionData fieldExtData = fieldExtDataIterator.next();
 
-            final int blkHelp = fieldExtData.help;
-            final String help = blkHelp == 0 ? null : new BlockGroupHelp(blkHelp, structureFile).toString();
-
             final BlockGroupPanelDefinition.TypedValue nameValue =
                 fieldExtData.valueMap.get(BlockGroupPanelDefinition.TypedValue.FIELD_NAME);
             final String name = nameValue == null ? null : (String) nameValue.value;
@@ -282,57 +239,26 @@ public class Database
                 fieldExtData.valueMap.get(BlockGroupPanelDefinition.TypedValue.PICTURE);
             final String picture = pictureValue == null ? null : (String) pictureValue.value;
 
-            final BlockGroupPanelDefinition.TypedValue doorDefinitionValue =
+            final BlockGroupPanelDefinition.TypedValue doorDefinition =
                 fieldExtData.valueMap.get(BlockGroupPanelDefinition.TypedValue.DOOR_DEFINITION);
-            final DoorDefinition link = doorDefinitionValue == null ? null : (DoorDefinition) doorDefinitionValue.value;
-
-            final BlockGroupPanelDefinition.TypedValue initializationValue =
-                fieldExtData.valueMap.get(BlockGroupPanelDefinition.TypedValue.INITIALIZATION);
-            final String initialization =
-                initializationValue == null ? null
-                                            : readInitialization((Initialization) initializationValue.value, picture);
+            final DoorDefinition link = doorDefinition == null ? null : (DoorDefinition) doorDefinition.value;
 
             final Field field =
                 new Field(new FieldProperties().withNumber(fieldInfo.fieldNumber) //
                 .withName(name) //
                 .withFormat(picture) //
-                .withHelp(help) //
+                .withHelp("Dummy") //
                 .withX(fieldExtData.x) //
                 .withY(fieldExtData.y) //
                 .withTypeDependentLengthInfo(fieldInfo.typeDependentLengthInfo) //
                 .withOffsetInRecord(fieldInfo.offsetInRecord) //
                 .withDatabaseSettings(databaseSettings) //
-                .withLink(link) //
-                .withInitialization(initialization)); //
+                .withLink(link)); //
 
             fieldList.add(field);
         }
 
         return fieldList;
-    }
-
-    private String readInitialization(final Initialization initialization, final String picture)
-                               throws IOException
-    {
-        final short value = 1;
-        final short range = 2;
-        final short formula = 3;
-
-        switch (initialization.kind)
-        {
-            case value:
-                return new BlockGroupInitialValue(initialization.blkPointer1, structureFile, picture).toString();
-
-            case range:
-
-                // TODO
-                break;
-
-            case formula:
-                return new BlockGroupFormula(initialization.blkPointer2, structureFile).toString();
-        }
-
-        return null;
     }
 
     /**
@@ -346,7 +272,7 @@ public class Database
     String readFromTextFile(final int blockNumber)
                      throws IOException
     {
-        return textFile.readTextAt(blockNumber);
+        return textFile.readTextAt(blockNumber); // hier gehts durch
     }
 
     /**
@@ -412,7 +338,7 @@ public class Database
     {
         checkIsOpen();
 
-        final Panel panel = fileNamePanelMap.get(fileName.toUpperCase());
+        final Panel panel = fileNamePanelMap.get(fileName);
         openIfRequired(panel);
 
         return panel;
@@ -464,6 +390,20 @@ public class Database
     }
 
     /**
+     * Sets the character decoder to use when reading strings from the database. If it is not
+     * specified and no start and end delimiters for extended ASCII character codes are specified
+     * either, then the default character decoder of the JVM is used.
+     *
+     * @param charsetName the name of the character set to use
+     * @see #setExtAsciiCodeDelimiters(String, String)
+     * @see Database
+     */
+    public void setCharset(final String charsetName)
+    {
+        this.charsetName = charsetName;
+    }
+
+    /**
      * Returns the character decoder that will be used to decode strings read from the database. If
      * <code>null</code> either the <code>Database.extAsciiCodeDelimiters</code> or the default
      * charset will be used.
@@ -478,7 +418,7 @@ public class Database
 
     /**
      * Sets the strings with which to delimit extended ASCII characters. For instance, if and
-     * extended ASCII character with numeric value 130 was encountered in the string "café",
+     * extended ASCII character with numeric value 130 was encountered in the string "caf&eacute",
      * and the start delimiter is "&lt;char code=" and the end delimiter is "/&gt;", the resulting
      * string will be
      *
@@ -655,35 +595,5 @@ public class Database
         {
             throw new IllegalStateException("Database must be open.");
         }
-    }
-
-    /**
-     * Finds matching file case insensitively, or null if no match is found.
-     * If there is more than one match, it is not defined which file will
-     *  be returned.
-     *
-     * @param panelFileName the panel file name
-     * @return the panel file
-     */
-    private File findPanelFile(final String panelFileName)
-    {
-        File panelFile = new File(structureFile.getDirectory(),
-                                  panelFileName);
-
-        if (panelFile.exists())
-        {
-            return panelFile;
-        }
-
-        for (String fileName : structureFile.getDirectory().list())
-        {
-            if (fileName.equalsIgnoreCase(panelFileName))
-            {
-                return new File(structureFile.getDirectory(),
-                                fileName);
-            }
-        }
-
-        return null;
     }
 }

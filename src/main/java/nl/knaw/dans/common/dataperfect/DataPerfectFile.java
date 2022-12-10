@@ -1,17 +1,18 @@
-/**
- * Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
+/*
+ * Copyright 2009 Data Archiving and Networked Services (DANS), Netherlands.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This file is part of DANS DataPerfect Library.
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * DANS DataPerfect Library is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * DANS DataPerfect Library is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with DANS DataPerfect
+ * Library. If not, see <http://www.gnu.org/licenses/>.
  */
 package nl.knaw.dans.common.dataperfect;
 
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
 
 /**
  * Base class for the classes that represent DataPerfect implementation files. Defines generic
@@ -30,7 +32,7 @@ abstract class DataPerfectFile
 {
     protected static final int BLOCK_SIZE = 32;
     protected final File file;
-    protected final DatabaseSettings databaseSettings;
+    private final DatabaseSettings databaseSettings;
     protected RandomAccessFile raFile;
 
     DataPerfectFile(final File file, final DatabaseSettings databaseSettings)
@@ -66,75 +68,6 @@ abstract class DataPerfectFile
         return (short) (0xFF & raFile.readByte());
     }
 
-    int readUnsignedShort()
-                   throws IOException
-    {
-        final byte b1 = raFile.readByte();
-        final byte b2 = raFile.readByte();
-
-        return (0xFF & b2) * 0x0100 + (0xFF & b1);
-    }
-
-    int readInteger()
-             throws IOException
-    {
-        final byte b1 = raFile.readByte();
-        final byte b2 = raFile.readByte();
-        final byte b3 = raFile.readByte();
-        final byte b4 = raFile.readByte();
-
-        return (0xFF & b4) * 0x01000000 + (0xFF & b3) * 0x00010000 + (0xFF & b2) * 0x00000100 + (0xFF & b1);
-    }
-
-    long readPackedNumber()
-                   throws IOException
-    {
-        /*
-         * Packed number fields are of fixed length.
-         */
-        final int LENGTH_PACKED_NUMBER_FIELD = 7;
-
-        /*
-         * The first byte (not counted) above, contains the sign and the number of digits stored.
-         */
-        final byte firstByte = raFile.readByte();
-        final int length = firstByte & 0x0F;
-        final boolean isPositive = (firstByte & 0xF0) == 0x40;
-
-        /*
-         * Read the whole packed field (including the zero padding at the end, so that the file
-         * pointer is moved to the next field).
-         */
-        final byte[] bytes = new byte[LENGTH_PACKED_NUMBER_FIELD];
-        raFile.readFully(bytes);
-
-        long result = 0;
-
-        /*
-         * Loop over the digits from the most significant to the least significant. Each nibble
-         * (half byte) stores a decimal digit.
-         */
-        for (int i = 0; i < length; ++i)
-        {
-            result *= 10;
-            result += (0xF0 & bytes[i / 2]) >> 4;
-            ++i;
-
-            /*
-             * If we are NOT in the last byte, OR (we are in the last byte but) the number's length
-             * in characters is even, THEN also process the second nibble. Otherwise the second
-             * nibble is zero and not part of the actual number encoded.
-             */
-            if (i < length)
-            {
-                result *= 10;
-                result += (0x0F & bytes[i / 2]);
-            }
-        }
-
-        return result * (isPositive ? 1 : -1);
-    }
-
     String readString()
                throws IOException
     {
@@ -146,49 +79,40 @@ abstract class DataPerfectFile
     String readString(final int aLength)
                throws IOException
     {
-        final byte[] value = new byte[aLength];
-        raFile.readFully(value);
+        final byte[] valueIso = new byte[aLength];
+        raFile.readFully(valueIso);
+        //byte[] valueUtf8 = new String(valueIso, "ISO-8859-1").getBytes("UTF-8");
+        byte[] valueUtf8 = new String(valueIso, "Windows-1252").getBytes("UTF-8");
+        //String strValueUtf8 = new String (valueIso.getBytes(Charset.forName("UTF-8")), Charset.forName("Windows-1252"));
 
-        String result = null;
-
+        String s = valueUtf8.toString();
         if (databaseSettings.getCharsetName() != null)
         {
-            result =
-                new String(value,
-                           databaseSettings.getCharsetName());
+            return new String(valueUtf8,
+                              databaseSettings.getCharsetName());
         }
         else if (databaseSettings.getExtAsciiCodeStartDelimiter() != null)
         {
             final DelimiterEncodedExtendedAsciiString encodedExtAsciiString =
-                new DelimiterEncodedExtendedAsciiString(value,
+                new DelimiterEncodedExtendedAsciiString(valueIso,
                                                         databaseSettings.getExtAsciiCodeStartDelimiter(),
                                                         databaseSettings.getExtAsciiCodeEndDelimiter());
 
-            result = encodedExtAsciiString.toString();
+            return encodedExtAsciiString.toString(); // und hier TODO
         }
         else
         {
-            result = new String(value);
+            return new String(valueUtf8);
         }
-
-        return replaceNonPrintableCharacters(result);
     }
 
-    protected String replaceNonPrintableCharacters(String result)
+    int readUnsignedShort()
+                   throws IOException
     {
-        char[] characters = result.toCharArray();
+        final byte b1 = raFile.readByte();
+        final byte b2 = raFile.readByte();
 
-        for (int i = 0; i < characters.length; ++i)
-        {
-            final Character mappedChar = NonPrintableCharacterMap.get(characters[i]);
-
-            if (mappedChar != null)
-            {
-                characters[i] = mappedChar;
-            }
-        }
-
-        return new String(characters);
+        return (0xFF & b2) * 0x0100 + (0xFF & b1);
     }
 
     void skipBytes(final int n)

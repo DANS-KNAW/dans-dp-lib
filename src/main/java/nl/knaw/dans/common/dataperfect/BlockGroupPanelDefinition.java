@@ -1,17 +1,18 @@
-/**
- * Copyright (C) 2009-2016 DANS - Data Archiving and Networked Services (info@dans.knaw.nl)
+/*
+ * Copyright 2009 Data Archiving and Networked Services (DANS), Netherlands.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This file is part of DANS DataPerfect Library.
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * DANS DataPerfect Library is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * DANS DataPerfect Library is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with DANS DataPerfect
+ * Library. If not, see <http://www.gnu.org/licenses/>.
  */
 package nl.knaw.dans.common.dataperfect;
 
@@ -35,7 +36,6 @@ final class BlockGroupPanelDefinition
      * group, not from the start.
      */
     private static final int OFFSET_CORRECTION = 2;
-    private static final int DOOR_DEFINITION_BYTES_READ = 3;
     final short panelNumber;
     final int recordLength;
     final int blkPanelFileName;
@@ -56,15 +56,15 @@ final class BlockGroupPanelDefinition
      * Reads and stores a sub-block with a field info structure. Assumes the structure file to be at
      * the correct position.
      */
-    static final class SubblockFieldInfo
+    final static class SubblockFieldInfo
     {
         final int fieldNumber;
         final int typeDependentLengthInfo;
         final int offsetInRecord;
         final int offsetInFieldExtensionData;
 
-        SubblockFieldInfo(final StructureFile structureFile)
-                   throws IOException
+        public SubblockFieldInfo(final StructureFile structureFile)
+                          throws IOException
         {
             fieldNumber = structureFile.readByte();
 
@@ -93,7 +93,6 @@ final class BlockGroupPanelDefinition
         final int length;
         final int x;
         final int y;
-        final int help;
 
         // TODO: Read fixed size values
         final Map<Integer, TypedValue> valueMap = new HashMap<Integer, TypedValue>();
@@ -104,10 +103,9 @@ final class BlockGroupPanelDefinition
             length = structureFile.readByte();
             x = structureFile.readByte();
             y = structureFile.readByte();
-            help = structureFile.readBlockNumber();
 
             // TODO: Read fixed size data also
-            structureFile.skipBytes(5);
+            structureFile.skipBytes(8);
 
             TypedValue value = new TypedValue(structureFile);
 
@@ -160,19 +158,10 @@ final class BlockGroupPanelDefinition
             {
                 case TARGET_GROUPS:
                 case FIELD_VALUE_LIST:
+                case INITIALIZATION:
                 case EDIT_CHECK:
-                case AUTO_INCREMENT:
-                case LOOKUP_LIST:
-                case DISPLAY:
-                case AUTO_LOOKUP_LIST:
-                case SEARCH_LIST:
                     // Ignore for now, just skip to next
                     structureFile.skipBytes(length);
-
-                    break;
-
-                case INITIALIZATION:
-                    value = new Initialization(structureFile);
 
                     break;
 
@@ -181,19 +170,20 @@ final class BlockGroupPanelDefinition
 
                     break;
 
+                case SEARCH_LIST:
+                    break;
+
                 case DOOR_DEFINITION:
                     value = new DoorDefinition(structureFile);
 
-                    /*
-                     * Skip any bytes beyond 3.
-                     *
-                     * As only the first 3 bytes are read,
-                     * any remaining bytes will be skipped.
-                     */
-                    if (length > DOOR_DEFINITION_BYTES_READ)
-                    {
-                        structureFile.skipBytes(length - DOOR_DEFINITION_BYTES_READ);
-                    }
+                    break;
+
+                case AUTO_INCREMENT:
+                case LOOKUP_LIST:
+                case DISPLAY:
+                case AUTO_LOOKUP_LIST:
+                    // Ignore for now, just skip to next
+                    structureFile.skipBytes(length);
 
                     break;
 
@@ -209,40 +199,27 @@ final class BlockGroupPanelDefinition
     }
 
     /**
-     * Defines a Data Link or Panel Link.
+     * Specifies a Data Link or Panel Link.
      *
      */
     static final class DoorDefinition
     {
         final short targetPanelNumber;
-        final short targetFieldNumber;
+        final short targetLandingField;
         final short targetIndex;
+        final short flags;
+        final short sourceFieldList;
+        final short autoDisp;
 
         DoorDefinition(final StructureFile structureFile)
                 throws IOException
         {
             targetPanelNumber = structureFile.readByte();
-            targetFieldNumber = structureFile.readByte();
+            targetLandingField = structureFile.readByte();
             targetIndex = structureFile.readByte();
-        }
-    }
-
-    /**
-     * Defines a field's initial value, range or formula.
-     *
-     */
-    static final class Initialization
-    {
-        final short kind;
-        final int blkPointer1;
-        final int blkPointer2;
-
-        Initialization(final StructureFile structureFile)
-                throws IOException
-        {
-            kind = structureFile.readByte();
-            blkPointer1 = structureFile.readBlockNumber();
-            blkPointer2 = structureFile.readBlockNumber();
+            flags = structureFile.readByte();
+            sourceFieldList = structureFile.readByte();
+            autoDisp = structureFile.readByte();
         }
     }
 

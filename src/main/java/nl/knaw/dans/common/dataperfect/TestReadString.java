@@ -16,25 +16,21 @@
  */
 package nl.knaw.dans.common.dataperfect;
 
+import static org.junit.Assert.assertEquals;
 
-/**
- * Keys for the default settings map in {@link Database}.
- *
- * @author Martin Braaksma
- */
-enum DefaultSettings
+import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+
+public class TestReadString
 {
-    COLOR_1,
-    COLOR_2,
-    COLOR_3,
-    COLOR_4,
-    MENU_EDIT_COLOR,
-    PERIOD,
-    COMMA,
-    YMD,
-    HMS,
-    LINE_0,
-    DATE_0_TYPE,
-    AUTO_HELP,
-    REPORT_DISPLAY;
+    @Test
+    public void testReadStringWithDelimiters()
+                                      throws UnsupportedEncodingException
+    {
+        byte[] input = "Caf\u00E9".getBytes("ISO-8859-1");
+
+        assertEquals("Caf<233/>",
+                     new DelimiterEncodedExtendedAsciiString(input, "<", "/>").toString());
+    }
 }
