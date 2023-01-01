@@ -111,18 +111,28 @@ public class Dp2Pg_Literat
         String[] columnsBooks = {"category", "book_id", "author", "title", "month_read", "year_read", 
         					"source", "medial_id", "exzerpt", "publisher", "edition", "year_published",
         					"isbn", "keywords", "abstract"};
+        String[] columnsKat = {"category"};
+        String[] columnsKeys = {"keys"};
         String[] columnsOrd = {"book_id", "keywords"};
 
         final List<Field> fields = panel.getFields();
         final Iterator<Field> fieldIterator = fields.iterator();
 
-		if (tc > 2) // letzte Tabelle
+		if (tc > 2) // Tabelle Keys Zuordnungen
 			for (int i = 0; i < 2; i++) {
-				writer.print(columnsOrd[i] + " varchar(254)");
+				writer.print(columnsOrd[i] + " varchar(64)");
 				if (i < 1)
 					writer.print(", "); // nach letzter Spalte kein Komma mehr
 			}
-		else if (tc > 0)
+		else if (tc > 1) // Tabelle Schlüsselworte Keys
+			for (int i = 0; i < 1; i++) {
+				writer.print(columnsKeys[i] + " varchar(64)");
+			}
+		else if (tc > 0) // Tabelle Kategorien
+			for (int i = 0; i < 1; i++) {
+				writer.print(columnsKat[i] + " varchar(64)");
+			}
+		/*if (tc > 0)
 			while (fieldIterator.hasNext()) {
 				final Field field = fieldIterator.next();
 
@@ -131,12 +141,14 @@ public class Dp2Pg_Literat
 				if (fieldIterator.hasNext()) {
 					writer.print(", ");
 				}
-			}
-		else // nur für 1. Tabelle meine columns verwenden table -> LITERATBOO
+			}*/
+		else // für 1. Tabelle meine columns verwenden table -> LITERATBOO
 			for (int i = 0; i < 15; i++) {
-				writer.print(columnsBooks[i] + " varchar(254)");
-				if (i < 14)
+				if (i < 14) {
+					writer.print(columnsBooks[i] + " varchar(254)");
 					writer.print(", "); // nach letzter Spalte kein Komma mehr
+				} else
+					writer.print(columnsBooks[i] + " varchar(1024)"); // abstract muss länger sein					
 			}
 
         writer.print(");");
