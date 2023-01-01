@@ -108,8 +108,8 @@ public class Dp2Pg_Literat
         writer.print("CREATE TABLE ");
         writer.print(tableName);
         writer.print("(");
-        String[] columnsBooks = {"category", "book_id", "author", "title", "month", "year_read", 
-        					"source", "medial_id", "exzerpt", "verlag", "auflage", "jahr",
+        String[] columnsBooks = {"category", "book_id", "author", "title", "month_read", "year_read", 
+        					"source", "medial_id", "exzerpt", "publisher", "edition", "year_published",
         					"isbn", "keywords", "abstract"};
         String[] columnsOrd = {"book_id", "keywords"};
 
@@ -185,13 +185,13 @@ public class Dp2Pg_Literat
                 		helper = correctCharY (helper3);  // muss mit Windows11 auf neuem Laptop zusammenhängen
                 	
                 	if (tableName.equals("LITERATBOO")) {
-						if (colCounter == 2)
+						if (colCounter == 2) // nur ID
 							if (rowCounter < 10)
 								helper = helper3.replaceAll("0", ""); // einstellige IDs falsch 100 >> 1
 							else if (rowCounter < 97)
 								helper = helper3.substring(0, 2); // 2-stellige IDs falsch 110 >> 11, 3x IDs fehlen vor 100
 
-						if (colCounter < 13) // Daniel Spezial für ISBM Nummer 4 Zahlen >> ISBN xxx-xxxx-xxxx-x als String
+						if (colCounter < 13) // Daniel Spezial für ISBN 4 Zahlen >> ISBN xxx-xxxx-xxxx-x als String
 							values += "'" + helper + "'";
 						else if (colCounter < 14)
 							values += "'" + helper;
@@ -204,7 +204,7 @@ public class Dp2Pg_Literat
 							values += "'" + helper + "'"; // normaler Ablauf alle normalen Felder landen hier
 					}
                 	else if (tableName.equals("LITERATORD")) {
-						if (colCounter == 1)
+						if (colCounter == 1) // nur ID von LiteratOrd
 							if (rowCounter < 5)
 								helper = helper3.replaceAll("0", ""); // einstellige IDs falsch 100 >> 1
 							else if (rowCounter < 7)
